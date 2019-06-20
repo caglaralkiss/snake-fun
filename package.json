@@ -1,0 +1,34 @@
+{
+  "name": "snake",
+  "version": "1.0.0",
+  "description": "Classic Snake game developed with HTML5 Canvas, Typescript and RxJS.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --open",
+    "build": "webpack",
+    "test": "node ./node_modules/karma/bin/karma start"
+  },
+  "author": "Caglar Alkis",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jasmine": "^3.3.13",
+    "awesome-typescript-loader": "^5.2.1",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^2.1.1",
+    "html-webpack-plugin": "^3.2.0",
+    "jasmine": "^3.4.0",
+    "jasmine-core": "^3.4.0",
+    "karma-jasmine": "^2.0.1",
+    "karma-mocha-reporter": "^2.2.5",
+    "karma-webpack": "^3.0.5",
+    "style-loader": "^0.23.1",
+    "typescript": "^3.5.1",
+    "webpack": "^4.32.2",
+    "webpack-cli": "^3.3.2",
+    "webpack-dev-server": "^3.7.2",
+    "webpack-merge": "^4.2.1"
+  },
+  "dependencies": {
+    "rxjs": "^6.5.2"
+  }
+}
