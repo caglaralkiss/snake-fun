@@ -15,6 +15,6 @@ module.exports = {
 			allowTemplateLiterals: true
 		}],
 		'space-before-function-paren': 'off',
-		'object-curly-spacing': ['error', 'always']
+		'object-curly-spacing': ['error', 'always'],
 	}
 }
