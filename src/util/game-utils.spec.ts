@@ -1,11 +1,28 @@
 import { Point, Snake } from '../interfaces';
-import { generateInitialSnake, generateRandomFood } from './game-utils';
+import { checkCollision, checkFoodEat, generateInitialSnake, generateRandomFood } from './game-utils';
 
 describe('GameUtils', () => {
     const MOCK_CENTER_POINT: Point = {
         X: 14,
         Y: 14,
     }
+
+    const COLLAPSED_SNAKE: Snake = {
+        head: { X: 1, Y: 0 },
+        body: [
+            { X: 1, Y: 0 },
+            { X: 2, Y: 0 },
+            { X: 2, Y: 1 },
+            { X: 1, Y: 1 }
+        ],
+        tail: { X: 0, Y: 0 },
+    };
+
+    const NON_COLLAPSED_SNAKE: Snake = {
+        head: { X: 0, Y: 0 },
+        body: [],
+        tail: { X: 1, Y: 0 }
+    };
 
     test('should create a snake from given center point', () => {
         const { head, body, tail } = generateInitialSnake(MOCK_CENTER_POINT);
@@ -26,5 +43,19 @@ describe('GameUtils', () => {
         expect(food.X).toBeLessThanOrEqual(width);
         expect(food.Y).toBeLessThanOrEqual(height);
         [head, ...body, tail].forEach(snakePoint => expect(snakePoint).not.toEqual(food));
-    })
+    });
+
+    test('should check whether snake eat food', () => {
+        const snake: Snake = generateInitialSnake(MOCK_CENTER_POINT);
+        const foodAtHead: Point = snake.head;
+        const foodAtNotHead: Point = { ...snake.head, X: snake.head.X + 1 };
+
+        expect(checkFoodEat(snake, foodAtHead)).toBeTruthy();
+        expect(checkFoodEat(snake, foodAtNotHead)).toBeFalsy();
+    });
+
+    test('should check collision of snake head', () => {
+       expect(checkCollision(COLLAPSED_SNAKE)).toBeTruthy();
+       expect(checkCollision(NON_COLLAPSED_SNAKE)).toBeFalsy();
+    });
 });

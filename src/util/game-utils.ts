@@ -2,8 +2,8 @@ import { Point, Snake } from '../interfaces';
 
 export const POINT_DELIMITER = ',';
 
-function serializePoint(x: number, y: number): string {
-    return `${x}${POINT_DELIMITER}${y}`;
+function serializePoint(point: Point): string {
+    return `${point.X}${POINT_DELIMITER}${point.Y}`;
 }
 
 function parsePoint(pointStr: string): Point {
@@ -29,7 +29,7 @@ function getAllPoints(width: number, height: number): Array<string> {
 
     for (let i = 0; i < width; i++) {
         for (let j = 0; j < height; j++) {
-            points.push(serializePoint(i, j));
+            points.push(serializePoint({ X: i, Y: j }));
         }
     }
 
@@ -71,7 +71,7 @@ export function generateRandomFood(snake: Snake, width: number, height: number):
     const { head, body, tail } = snake;
 
     const allPoints: Array<string> = getAllPoints(width, height);
-    const filledPoints: Array<string> = [head, ...body, tail].map(point => serializePoint(point.X, point.Y));
+    const filledPoints: Array<string> = [head, ...body, tail].map(point => serializePoint(point));
     const emptyPoints: Array<Point> = allPoints
         .filter(point => !filledPoints.includes(point))
         .map(pointStr => parsePoint(pointStr));
@@ -79,4 +79,29 @@ export function generateRandomFood(snake: Snake, width: number, height: number):
     const randomPointIndex = generateRandomInteger(emptyPoints.length);
 
     return emptyPoints[randomPointIndex];
+}
+
+/**
+ * Check whether food can be eaten by {@link Snake}
+ *
+ * @param snake
+ * @param food
+ */
+export function checkFoodEat(snake: Snake, food: Point): boolean {
+    const { head: snakeHead } = snake;
+
+    return snakeHead.X === food.X && snakeHead.Y === food.Y;
+}
+
+/**
+ * Check whether {@link Snake} head is collided with body and tail parts.
+ *
+ * @param snake
+ */
+export function checkCollision(snake: Snake): boolean {
+    const { head, body, tail } = snake;
+
+    return [...body, tail]
+        .map(point => serializePoint(point))
+        .includes(serializePoint(head));
 }
