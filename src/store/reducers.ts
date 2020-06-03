@@ -1,10 +1,10 @@
 import {
-    GameActionTypes,
     CHANGE_DIRECTION,
     CREATE_SNAKE,
+    GameActionTypes,
+    GameState,
     GROW_SNAKE,
     REMOVE_SNAKE,
-    GameState,
     UPDATE_FOOD,
     UPDATE_PLAY_STATE,
     UPDATE_SCORE,
@@ -68,31 +68,32 @@ const move = (snake: Snake, direction: Direction) => {
  * @param currDirection
  */
 const growSnake = (snake: Snake, currDirection: Direction) => {
-    const { body, tail } = snake;
+    const { body: oldBody, tail } = snake;
+    const growthSnakeWithoutTail: Snake = {
+        ...snake,
+        body: [...oldBody, tail],
+        tail: null,
+    };
 
     switch (currDirection) {
         case Direction.UP:
             return {
-                ...snake,
-                body: [...body, tail],
+                ...growthSnakeWithoutTail,
                 tail: { X: tail.X, Y: tail.Y + 1 }
             };
         case Direction.DOWN:
             return {
-                ...snake,
-                body: [tail, ...body],
+                ...growthSnakeWithoutTail,
                 tail: { X: tail.X, Y: tail.Y - 1 }
             };
         case Direction.LEFT:
             return {
-                ...snake,
-                body: [...body, tail],
+                ...growthSnakeWithoutTail,
                 tail: { X: tail.X + 1, Y: tail.Y }
             };
         case Direction.RIGHT:
             return {
-                ...snake,
-                body: [tail, ...body],
+                ...growthSnakeWithoutTail,
                 tail: { X: tail.X - 1, Y: tail.Y }
             };
         default:
@@ -124,7 +125,7 @@ export function gameReducer(
 
     switch (action.type) {
         case CREATE_SNAKE:
-            return { ...state, snake: action.payload };
+            return { ...state, snake: action.payload, direction: Direction.RIGHT };
         case GROW_SNAKE:
             const growthSnake = growSnake(snake, currDirection);
             return { ...state, snake: growthSnake };
