@@ -18,6 +18,7 @@ import { fromEvent, interval, of } from 'rxjs';
 import { distinctUntilChanged, filter, map, share, switchMap } from 'rxjs/operators';
 import { checkCollision, checkFoodEat, generateInitialSnake, generateRandomFood } from './util/game-utils';
 import { Point, Snake } from './interfaces';
+import './app.css';
 
 const REFS = {
     currentScoreText: document.querySelector('.score-board__current') as HTMLElement,
